@@ -1,0 +1,13 @@
+{
+    "name": "Nx Monorepo CI",
+    "description": "Nx Monorepo CI workflow template",
+    "iconName": "example-icon",
+    "categories": [
+        "node", "javascript", "angular", "nx", "@nrwl/nx", "react", "vue", "js"
+    ],
+    "filePatterns": [
+        "package.json$",
+        "^Dockerfile",
+        ".*\\.md$"
+    ]
+}
