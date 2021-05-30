@@ -37,9 +37,9 @@ jobs:
 
       - name: Calculate Affected Projects
         uses: e-square-io/nx-github-actions/dist/packages/nx-affected-matrix@master
-          id: affected
-          with:
-            targets: 'test,build'
+        id: affected
+        with:
+          targets: 'test,build'
 
   distributed-task:
     name: Run ${{ matrix.target }} ${{ matrix.bucket }}
@@ -68,9 +68,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci --cache .npm
 
-      - name: Run Action
+      - name: Execute target
         uses: e-square-io/nx-github-actions/dist/packages/nx-distributed-task@master
-        id: run
+        id: execute
         with:
           target: ${{ matrix.target }}
           bucket: ${{ matrix.bucket }}
