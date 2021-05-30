@@ -9,7 +9,7 @@ on:
 jobs:
   setup:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    name: Cache Dependencies
+    name: Setup
     runs-on: ubuntu-latest
     outputs:
       hasChanges: ${{ steps.affected.outputs.hasChanges }}
@@ -47,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     strategy:
+      fail-fast: false
       matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v2
