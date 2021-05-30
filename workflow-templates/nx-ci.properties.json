@@ -1,0 +1,11 @@
+{
+    "name": "NX CI",
+    "description": "NX Monorepo CI that utilizes NX affected github actions",
+    "iconName": "e-square",
+    "categories": [
+        "node", "javascript", "angular", "nx", "@nrwl/nx", "react", "vue", "js"
+    ],
+    "filePatterns": [
+        "nx.json$"
+    ]
+}
