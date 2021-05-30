@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ $default-branch ]
 
-env:
-  TARGETS: 'lint,test,build'
-  BUCKETS_AMOUNT: 3
-
 jobs:
   setup:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
