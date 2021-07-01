@@ -1,6 +1,6 @@
 {
-    "name": "NX CI",
-    "description": "NX Monorepo CI that utilizes NX affected github actions",
+    "name": "PR Workflow",
+    "description": "workflow for pull requests, includes coverage report, utilizes NX github actions",
     "iconName": "e-square",
     "categories": [
         "node", "javascript", "angular", "nx", "@nrwl/nx", "react", "vue", "js"

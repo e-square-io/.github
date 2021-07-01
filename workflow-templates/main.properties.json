@@ -1,0 +1,11 @@
+{
+    "name": "Main Workflow",
+    "description": "workflow for main branch, includes semantic release and coverage report, utilizes NX github actions",
+    "iconName": "e-square",
+    "categories": [
+        "node", "javascript", "angular", "nx", "@nrwl/nx", "react", "vue", "js"
+    ],
+    "filePatterns": [
+        "nx.json$"
+    ]
+}
