@@ -1,0 +1,23 @@
+  name: "Setup node and install"
+  description: "get an app's github token with permissions to push"
+  author: "e-square.io"
+  inputs:
+    node-version:
+      description: "node version to set up"
+      required: false
+      default: "14"
+  outputs:
+    github-token:
+      description: "the generated app's github token"
+      value: ${{ steps.token.outputs.token }}
+  runs:
+    using: composite
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+
+      - name: Install Dependencies
+        shell: bash
+        run: npm ci --prefer-offline --no-audit

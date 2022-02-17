@@ -1,0 +1,43 @@
+  name: 'NX codecov'
+  description: 'Upload projects coverage reports to codecov with relevant flags'
+  author: 'e-square.io'
+  inputs:
+    path:
+      description: 'Path relative to $GITHUB_WORKSPACE to the directory containing the covered projects'
+      required: true
+    token:
+      description: 'codecov token'
+      required: false
+  runs:
+    using: composite
+    steps:
+      - name: Upload reports
+        shell: bash
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          
+          for dir in "${{ github.workspace }}/${{ inputs.path }}/*"; do
+            project=$(basename $dir)
+            
+            args=(
+              -s "$dir"
+              -F "$project"
+            )
+            
+            if [ -n "${CODECOV_TOKEN}" ]; then
+              args+=(-t "$CODECOV_TOKEN") 
+            fi
+          
+            if [[ ${{ github.event_name }} == "pull_request" || ${{ github.event_name }} == "pull_request_target" ]]; then
+              args+=(-C "${{ github.event.pull_request.head.sha }}")
+            fi
+          
+            if [[ ${{ github.event_name }} == "pull_request_target" ]]; then
+              args+=(-P "${{ github.event.number }}")
+            fi
+          
+            ./codecov "${args[@]}"
+          done
+        env:
+          CODECOV_TOKEN: ${{ inputs.token }}

@@ -1,0 +1,76 @@
+  name: 'Semantic Release'
+  description: 'Release new version semantically'
+  author: 'e-square.io'
+  inputs:
+    github-token:
+      description: 'github token'
+      required: false
+    npm-token:
+      description: 'An NPM token for publishing to npm'
+      required: false
+      default: 'XXXXX-XXXXX-XXXXX-XXXXX'
+    branch:
+      description: 'The branch to compare versions with'
+      required: false
+      default: 'main'
+    dry-run:
+      description: 'Will run run the action without affecting the repo (release tag and push code)'
+      required: false
+      default: 'false'
+    user-name:
+      description: 'Will be used when committing the release to the repo'
+      required: false
+      default: 'e-square-ci'
+    user-email:
+      description: 'Will be used when committing the release to the repo'
+      required: false
+      default: 'ci@e-square.io'
+  outputs:
+    released:
+      description: 'a boolean indicating if there is a new version to release'
+      value: ${{ steps.release.outputs.released }}
+    version:
+      description: 'the new version that will be released'
+      value: ${{ steps.release.outputs.version }}
+    major:
+      description: 'the major part of the new version'
+      value: ${{ steps.release.outputs.major }}
+    minor:
+      description: 'the minor part of the new version'
+      value: ${{ steps.release.outputs.minor }}
+    patch:
+      description: 'the patch part of the new version'
+      value: ${{ steps.release.outputs.patch }}
+  runs:
+    using: composite
+    steps:
+      - name: Run semantic-release
+        id: release
+        uses: ridedott/release-me-action@master
+        with:
+          release-branches: '["main"]'
+          node-module: true
+          dry-run: ${{ inputs.dry-run }}
+        env:
+          GITHUB_TOKEN: ${{ inputs.token }}
+          NPM_TOKEN: ${{ inputs.npm-token }}
+
+      - name: Update package.json version
+        if: ${{ steps.release.outputs.released && inputs.dry-run == 'true' }}
+        shell: bash
+        run: npm version --no-git-tag-version ${{ steps.release.outputs.version }}
+
+      - name: Update git tags
+        if: ${{ inputs.dry-run == 'false' }}
+        shell: bash
+        run: |
+          git config --global hub.protocol https
+          git config user.name ${{ inputs.user-name }}
+          git config user.email ${{ inputs.user-email }}
+          git remote set-url origin "https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git"
+          git remote set-url --push origin "https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git"
+          git tag -fa v${{ steps.release.outputs.major }} -m "Release v${{ steps.release.outputs.major }}"
+          git tag -fa v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} -m "Release v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}"
+          git push -f --tags
+        env:
+          GITHUB_TOKEN: ${{ inputs.github-token }}

@@ -1,0 +1,23 @@
+  name: 'Get Github App Token'
+  description: "get an app's github token with permissions to push"
+  author: 'e-square.io'
+  inputs:
+    token:
+      description: "A base64 representation of an appId, installationId and a private key (https://github.com/dtinth/obtain-github-app-installation-access-token)"
+      required: true
+  outputs:
+    github-token:
+      description: "the generated app's github token"
+      value: ${{ steps.auth.outputs.github-token }}
+  runs:
+    using: composite
+    steps:
+      - name: Obtain GitHub App Installation Access Token
+        id: auth
+        shell: bash
+        run: |
+          GITHUB_TOKEN="x-access-token:$(npx obtain-github-app-installation-access-token ci $TOKEN)"
+          echo "::add-mask::$GITHUB_TOKEN"
+          echo "::set-output name=github-token::$GITHUB_TOKEN"
+        env:
+          TOKEN: ${{ inputs.token }}
