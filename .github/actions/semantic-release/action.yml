@@ -61,7 +61,7 @@
         run: npm version --no-git-tag-version ${{ steps.release.outputs.version }}
 
       - name: Update git tags
-        if: ${{ fromJSON(inputs.dry-run) != false }}
+        if: ${{ !fromJSON(inputs.dry-run) }}
         shell: bash
         run: |
           git config --global hub.protocol https
