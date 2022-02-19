@@ -1,7 +1,7 @@
 {
     "name": "Code Scanning",
     "description": "Run CodeQL analysis",
-    "iconName": "e-square.svg",
+    "iconName": "e-square",
     "categories": [
        "node", "JavaScript", "Java", "js", "python3", "golang"
     ],

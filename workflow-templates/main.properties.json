@@ -1,7 +1,7 @@
 {
     "name": "NX Main Workflow",
     "description": "Utilizes e-square's github actions, will run build & tests with coverage reports (codecov) & release version",
-    "iconName": "e-square.svg",
+    "iconName": "e-square",
     "categories": [
         "node", "JavaScript", "Java", "js", "python3", "golang"
     ],
