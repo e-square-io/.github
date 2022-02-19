@@ -16,8 +16,8 @@
         id: auth
         shell: bash
         run: |
-          GITHUB_TOKEN="x-access-token:$(npx obtain-github-app-installation-access-token ci $TOKEN)"
+          GITHUB_TOKEN="$(npx obtain-github-app-installation-access-token ci $TOKEN)"
           echo "::add-mask::$GITHUB_TOKEN"
-          echo "::set-output name=github-token::$GITHUB_TOKEN"
+          echo "::set-output name=github-token::x-access-token:$GITHUB_TOKEN"
         env:
           TOKEN: ${{ inputs.token }}
