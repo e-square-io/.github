@@ -56,12 +56,12 @@
           NPM_TOKEN: ${{ inputs.npm-token }}
 
       - name: Update package.json version
-        if: ${{ steps.release.outputs.released && inputs.dry-run == 'true' }}
+        if: ${{ fromJSON(steps.release.outputs.released) && fromJSON(inputs.dry-run) }}
         shell: bash
         run: npm version --no-git-tag-version ${{ steps.release.outputs.version }}
 
       - name: Update git tags
-        if: ${{ inputs.dry-run == 'false' }}
+        if: ${{ fromJSON(inputs.dry-run) != false }}
         shell: bash
         run: |
           git config --global hub.protocol https

@@ -28,7 +28,7 @@ jobs:
 
   execute:
     name: Run ${{ matrix.target }} ${{ matrix.distribution }}
-    if: ${{ needs.setup.outputs.hasChanges == 'true' }}
+    if: ${{ fromJSON(needs.setup.outputs.hasChanges) }}
     runs-on: ubuntu-latest
     needs: [ setup ]
     strategy:
@@ -63,7 +63,7 @@ jobs:
   release:
     name: Release version
     runs-on: ubuntu-latest
-    if: ${{ needs.setup.outputs.hasChanges && github.event_name == 'push' && github.ref == 'refs/heads/$default-branch' }}
+    if: ${{ fromJSON(needs.setup.outputs.hasChanges) && github.event_name == 'push' && github.ref == 'refs/heads/$default-branch' }}
     needs: [setup, execute]
     outputs:
       released: ${{ steps.release.outputs.released }}
