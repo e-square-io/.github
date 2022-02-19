@@ -2,8 +2,8 @@
   description: 'Push directory to selected repo'
   author: 'e-square.io'
   inputs:
-    token:
-      description: 'github token. in order to push to protected branches, PAT with needed permissions is needed'
+    github-token:
+      description: 'github token. in order to push to protected branches, PAT with push permissions is needed'
       required: true
     path:
       description: 'Path to directory to push. relative to $GITHUB_WORKSPACE'
@@ -41,7 +41,7 @@
       - name: Push ${{ inputs.path }} to ${{ inputs.owner }}/${{ inputs.repository }}
         uses: symplify/monorepo-split-github-action@2.0
         env:
-          GITHUB_TOKEN: ${{ inputs.token }}
+          GITHUB_TOKEN: ${{ inputs.github-token }}
         with:
           tag: v${{ inputs.version }}
           package-directory: ${{ github.workspace }}/${{ inputs.path }}
@@ -52,7 +52,7 @@
 
       - name: Update major and minor version tags
         env:
-          GITHUB_TOKEN: ${{ inputs.token }}
+          GITHUB_TOKEN: ${{ inputs.github-token }}
         shell: bash
         run: |
           git config --global hub.protocol https
