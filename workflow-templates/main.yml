@@ -63,7 +63,7 @@ jobs:
   release:
     name: Release version
     runs-on: ubuntu-latest
-    if: ${{ needs.setup.outputs.hasChanges && github.event_name == 'push' && github.ref == refs/heads/$default-branch }}
+    if: ${{ needs.setup.outputs.hasChanges && github.event_name == 'push' && github.ref == 'refs/heads/$default-branch' }}
     needs: [setup, execute]
     outputs:
       released: ${{ steps.release.outputs.released }}
