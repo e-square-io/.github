@@ -1,9 +1,9 @@
 {
     "name": "Code Scanning",
     "description": "Run CodeQL analysis",
-    "iconName": "e-square",
+    "iconName": "e-square.svg",
     "categories": [
-        "node", "javascript", "angular", "nx", "@nrwl/nx", "react", "vue", "js"
+       "node", "JavaScript", "Java", "js", "python3", "golang"
     ],
     "filePatterns": [
         "package.json$"

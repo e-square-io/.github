@@ -1,9 +1,9 @@
 {
     "name": "NX Main Workflow",
     "description": "Utilizes e-square's github actions, will run build & tests with coverage reports (codecov) & release version",
-    "iconName": "e-square",
+    "iconName": "e-square.svg",
     "categories": [
-        "node", "javascript", "angular", "nx", "@nrwl/nx", "react", "vue", "js", "next", "gatsby"
+        "node", "JavaScript", "Java", "js", "python3", "golang"
     ],
     "filePatterns": [
         "nx.json$"
