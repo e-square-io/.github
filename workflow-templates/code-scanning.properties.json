@@ -3,7 +3,7 @@
     "description": "Run CodeQL analysis",
     "iconName": "e-square",
     "categories": [
-       "node", "JavaScript", "Java", "js", "python3", "golang"
+       "JavaScript", "Java", "js", "python3", "golang"
     ],
     "filePatterns": [
         "package.json$"
