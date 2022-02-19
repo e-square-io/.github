@@ -52,7 +52,7 @@
           node-module: true
           dry-run: ${{ inputs.dry-run }}
         env:
-          GITHUB_TOKEN: ${{ inputs.token }}
+          GITHUB_TOKEN: ${{ inputs.github-token }}
           NPM_TOKEN: ${{ inputs.npm-token }}
 
       - name: Update package.json version
