@@ -43,6 +43,7 @@ jobs:
         if: ${{ matrix.target == 'build' }}
         uses: e-square-io/.github/.github/actions/semantic-release@main
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           dry-run: true
 
       - name: Execute target
@@ -93,5 +94,5 @@ jobs:
         id: release
         uses: e-square-io/.github/.github/actions/semantic-release@main
         with:
-          token: ${{ steps.githubAppAuth.outputs.github-token }}
+          github-token: ${{ steps.githubAppAuth.outputs.github-token }}
           npm-token: ${{ secrets.NPM_TOKEN }}

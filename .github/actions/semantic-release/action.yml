@@ -4,7 +4,7 @@
   inputs:
     github-token:
       description: 'github token'
-      required: false
+      required: true
     npm-token:
       description: 'An NPM token for publishing to npm'
       required: false
