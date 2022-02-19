@@ -18,6 +18,6 @@
         run: |
           GITHUB_TOKEN="$(npx obtain-github-app-installation-access-token ci $TOKEN)"
           echo "::add-mask::$GITHUB_TOKEN"
-          echo "::set-output name=github-token::x-access-token:$GITHUB_TOKEN"
+          echo "::set-output name=github-token::$GITHUB_TOKEN"
         env:
           TOKEN: ${{ inputs.token }}

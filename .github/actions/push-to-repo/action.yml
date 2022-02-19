@@ -41,7 +41,7 @@
       - name: Push ${{ inputs.path }} to ${{ inputs.owner }}/${{ inputs.repository }}
         uses: symplify/monorepo-split-github-action@2.0
         env:
-          GITHUB_TOKEN: ${{ inputs.github-token }}
+          GITHUB_TOKEN: x-access-token:${{ inputs.github-token }}
         with:
           tag: v${{ inputs.version }}
           package-directory: ${{ github.workspace }}/${{ inputs.path }}
@@ -52,7 +52,7 @@
 
       - name: Update major and minor version tags
         env:
-          GITHUB_TOKEN: ${{ inputs.github-token }}
+          GITHUB_TOKEN: x-access-token:${{ inputs.github-token }}
         shell: bash
         run: |
           git config --global hub.protocol https
