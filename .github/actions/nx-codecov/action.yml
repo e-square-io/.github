@@ -17,7 +17,7 @@
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           
-          for dir in "${{ github.workspace }}/${{ inputs.path }}/*"; do
+          for dir in "./${{ inputs.path }}/*"; do
             project=$(basename $dir)
             
             args=(
