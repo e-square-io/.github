@@ -17,16 +17,22 @@
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           
-          for dir in "./${{ inputs.path }}/*"; do
+          if [ ! -d "./${{ inputs.path }}" ]; then 
+            echo "${{ inputs.path }} does not exist"
+            exit 0
+          fi
+          
+          for dir in ./${{ inputs.path }}/*; do
             project=$(basename $dir)
             
+            
             args=(
-              -s "$dir"
-              -F "$project"
+              -s "./${{ inputs.path }}/${project}"
+              -F "${project}"
             )
             
             if [ -n "${CODECOV_TOKEN}" ]; then
-              args+=(-t "$CODECOV_TOKEN") 
+              args+=(-t "${CODECOV_TOKEN}") 
             fi
           
             if [[ ${{ github.event_name }} == "pull_request" || ${{ github.event_name }} == "pull_request_target" ]]; then
@@ -37,7 +43,7 @@
               args+=(-P "${{ github.event.number }}")
             fi
           
-            echo "running ./codecov ${args[@]}"
+            echo "::debug::Set ./codecov ${args[@]}"
             ./codecov "${args[@]}"
           done
         env:
