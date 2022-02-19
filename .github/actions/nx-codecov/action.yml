@@ -37,6 +37,7 @@
               args+=(-P "${{ github.event.number }}")
             fi
           
+            echo "running ./codecov ${args[@]}"
             ./codecov "${args[@]}"
           done
         env:
