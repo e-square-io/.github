@@ -1,0 +1,71 @@
+  name: 'Push to repo'
+  description: 'Push directory to selected repo'
+  author: 'e-square.io'
+  inputs:
+    token:
+      description: 'github token. in order to push to protected branches, PAT with needed permissions is needed'
+      required: true
+    path:
+      description: 'Path to directory to push. relative to $GITHUB_WORKSPACE'
+      required: true
+    version:
+      description: 'version to use for tag'
+      required: true
+    repository:
+      description: 'repository name'
+      required: true
+    owner:
+      description: 'repository owner name'
+      required: false
+      default: 'e-square-io'
+    branch:
+      description: 'branch to push into'
+      required: false
+      default: 'main'
+  runs:
+    using: composite
+    steps:
+      - name: Format tag
+        id: formatTag
+        shell: bash
+        run: |
+          VERSION="${${{inputs.tag}}#[vV]}"
+          VERSION_MAJOR="${VERSION%%\.*}"
+          VERSION_MINOR="${VERSION#*.}"
+          VERSION_MINOR="${VERSION_MINOR%.*}"
+          VERSION_PATCH="${VERSION##*.}"
+          
+          echo "::set-output name=major::$VERSION_MAJOR"
+          echo "::set-output name=minor::$VERSION_MINOR"
+
+      - name: Push ${{ inputs.path }} to ${{ inputs.owner }}/${{ inputs.repository }}
+        uses: symplify/monorepo-split-github-action@2.0
+        env:
+          GITHUB_TOKEN: ${{ inputs.token }}
+        with:
+          tag: v${{ inputs.version }}
+          package-directory: ${{ github.workspace }}/${{ inputs.path }}
+          split-repository-organization: ${{ inputs.owner }}
+          split-repository-name: ${{ inputs.repository }}
+          user-name: e-square-ci
+          user-email: ci@e-square.io
+
+      - name: Update major and minor version tags
+        env:
+          GITHUB_TOKEN: ${{ inputs.token }}
+        shell: bash
+        run: |
+          git config --global hub.protocol https
+          git config user.name e-square-ci
+          git config user.email ci@e-square.io
+          git remote rm origin
+          git remote add origin "https://$GITHUB_TOKEN@github.com/${{ inputs.owner }}/${{ inputs.repository }}.git"
+          git fetch -f
+          git fetch --tags -f
+          git config main.remote origin
+          git config main.merge refs/heads/${{ inputs.branch }}
+          git reset --hard origin/${{ inputs.branch }}
+          git tag -fa v${{ steps.formatTag.outputs.major }} -m "Release v${{ steps.formatTag.outputs.major }}"
+          git tag -fa v${{ steps.formatTag.outputs.major }}.${{ steps.formatTag.outputs.minor }} -m "Release v${{ steps.formatTag.outputs.major }}.${{ steps.formatTag.outputs.minor }}"
+          git push origin -f refs/tags/v${{ steps.formatTag.outputs.major }}
+          git push origin -f refs/tags/v${{ steps.formatTag.outputs.major }}.${{ steps.formatTag.outputs.minor }}
