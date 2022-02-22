@@ -40,6 +40,7 @@
       - name: Push ${{ inputs.path }} to ${{ inputs.owner }}/${{ inputs.repository }}
         uses: symplify/monorepo-split-github-action@2.0
         env:
+          VERSION: ${{ inputs.version }}
           GITHUB_TOKEN: x-access-token:${{ inputs.github-token }}
         with:
           tag: v${{ inputs.version }}
