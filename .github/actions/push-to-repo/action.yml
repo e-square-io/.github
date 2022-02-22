@@ -29,7 +29,6 @@
         id: formatTag
         shell: bash
         run: |
-          VERSION="${${{ inputs.version }}#[vV]}"
           VERSION_MAJOR="${VERSION%%\.*}"
           VERSION_MINOR="${VERSION#*.}"
           VERSION_MINOR="${VERSION_MINOR%.*}"
