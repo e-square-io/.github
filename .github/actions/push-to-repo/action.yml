@@ -36,6 +36,8 @@
           
           echo "::set-output name=major::$VERSION_MAJOR"
           echo "::set-output name=minor::$VERSION_MINOR"
+        env:
+          VERSION: ${{ inputs.version }}
 
       - name: Push ${{ inputs.path }} to ${{ inputs.owner }}/${{ inputs.repository }}
         uses: symplify/monorepo-split-github-action@2.0
