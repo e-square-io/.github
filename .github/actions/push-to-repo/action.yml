@@ -46,7 +46,7 @@
           GITHUB_TOKEN: x-access-token:${{ inputs.github-token }}
         with:
           tag: v${{ inputs.version }}
-          package-directory: '${{ github.workspace }}/${{ inputs.path }}'
+          package-directory: '${{ inputs.path }}'
           split-repository-organization: ${{ inputs.owner }}
           split-repository-name: ${{ inputs.repository }}
           user-name: e-square-ci
