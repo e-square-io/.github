@@ -6,6 +6,13 @@
       description: "node version to set up"
       required: false
       default: "14"
+    cache:
+      description: "package manager to use"
+      required: false
+      default: "npm"
+    cache-dependency-path:
+      description: "Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies."
+      required: false
   outputs:
     github-token:
       description: "the generated app's github token"
@@ -16,8 +23,20 @@
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ inputs.node-version }}
-          cache: npm
+          cache: ${{ inputs.cache }}
+          cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
-      - name: Install Dependencies
+      - name: Install NPM Dependencies
+        if: ${{ inputs.cache == 'npm' }}
         shell: bash
         run: npm ci --prefer-offline --no-audit
+
+      - name: Install Yarn Dependencies
+        if: ${{ inputs.cache == 'yarn' }}
+        shell: bash
+        run: yarn --frozen-lockfile --prefer-offline --no-progress
+
+      - name: Install PNPM Dependencies
+        if: ${{ inputs.cache == 'pnpm' }}
+        shell: bash
+        run: pnpm i --prefer-offline --reporter silent
