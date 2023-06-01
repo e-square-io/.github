@@ -43,7 +43,7 @@
         uses: cpina/github-action-push-to-another-repository@main
         env:
           VERSION: ${{ inputs.version }}
-          API_TOKEN_GITHUB: x-access-token:${{ inputs.github-token }}
+          API_TOKEN_GITHUB: ${{ inputs.github-token }}
         with:
           source-directory: '${{ inputs.path }}'
           destination-github-username: ${{ inputs.owner }}
