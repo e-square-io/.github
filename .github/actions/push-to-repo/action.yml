@@ -40,15 +40,14 @@
           VERSION: ${{ inputs.version }}
 
       - name: Push ${{ inputs.path }} to ${{ inputs.owner }}/${{ inputs.repository }}
-        uses: symplify/monorepo-split-github-action@2.0
+        uses: cpina/github-action-push-to-another-repository@main
         env:
           VERSION: ${{ inputs.version }}
-          GITHUB_TOKEN: x-access-token:${{ inputs.github-token }}
+          API_TOKEN_GITHUB: x-access-token:${{ inputs.github-token }}
         with:
-          tag: v${{ inputs.version }}
-          package-directory: '${{ inputs.path }}'
-          split-repository-organization: ${{ inputs.owner }}
-          split-repository-name: ${{ inputs.repository }}
+          source-directory: '${{ inputs.path }}'
+          destination-github-username: ${{ inputs.owner }}
+          destination-repository-name: ${{ inputs.repository }}
           user-name: e-square-ci
           user-email: ci@e-square.io
 
@@ -67,7 +66,9 @@
           git config main.remote origin
           git config main.merge refs/heads/${{ inputs.branch }}
           git reset --hard origin/${{ inputs.branch }}
+          git tag -fa v${{ inputs.version }} -m "Release v${{ inputs.version }}"
           git tag -fa v${{ steps.formatTag.outputs.major }} -m "Release v${{ steps.formatTag.outputs.major }}"
           git tag -fa v${{ steps.formatTag.outputs.major }}.${{ steps.formatTag.outputs.minor }} -m "Release v${{ steps.formatTag.outputs.major }}.${{ steps.formatTag.outputs.minor }}"
+          git push origin -f refs/tags/v${{ inputs.version }}
           git push origin -f refs/tags/v${{ steps.formatTag.outputs.major }}
           git push origin -f refs/tags/v${{ steps.formatTag.outputs.major }}.${{ steps.formatTag.outputs.minor }}
